@@ -1,7 +1,9 @@
 const webpack = require("webpack");
 const path = require('path');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
-process.traceDeprecation = true
+process.traceDeprecation = true;
+var publicPath = '/';
 
 module.exports = {
   context: __dirname + '/app',
@@ -14,7 +16,7 @@ module.exports = {
   output: {
     // Output to the same directory
     path: path.resolve(__dirname, 'dist'), // string
-
+    publicPath: publicPath,
     // Capture name from the entry using a pattern
     filename: '[name].js',
   },
@@ -144,7 +146,12 @@ module.exports = {
 
   // What extra processing to perform
   plugins: [
-
+    new HtmlWebpackPlugin({
+      title: 'Test App',
+      template: "index.ejs",
+      hash: true,
+      publicPath: publicPath
+    })
   ],
 
   // Adjust module resolution algorithm
