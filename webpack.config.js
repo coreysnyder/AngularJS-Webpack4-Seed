@@ -1,8 +1,11 @@
 const webpack = require("webpack");
 const path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var ngAnnotatePlugin = require('ng-annotate-webpack-plugin');
 
 process.traceDeprecation = true;
+var ENV = process.env.npm_lifecycle_event;
+var isTest = (ENV.indexOf('test') > -1); // lifecycle event contains 'test'
 var publicPath = '/';
 
 module.exports = {
@@ -12,11 +15,12 @@ module.exports = {
     app: './app.js',
   },
 
+  mode: isTest ? 'development' : 'production',
   // Where to output
-  output: {
+  output: isTest ? {} : {
     // Output to the same directory
     path: path.resolve(__dirname, 'dist'), // string
-    publicPath: publicPath,
+    // publicPath: publicPath,
     // Capture name from the entry using a pattern
     filename: '[name].js',
   },
@@ -29,14 +33,14 @@ module.exports = {
         // Don't attempt to transpile any non-@aver node-modules
         exclude: /(node_modules\/(?!(@aver)\/).*|bower_components)/,
         use: [
-          {
-            loader: 'ng-annotate-loader',
-            options: { add: true, single_quotes: true }
-          },
+          // {
+          //   loader: 'ng-annotate-loader',
+          //   options: { add: true, single_quotes: true }
+          // },
           {
             loader: 'babel-loader',
             options: {
-              presets: ['@babel/preset-env', '@babel/preset-react'],
+              presets: ['@babel/preset-env'],
               retainLines: true
             }
           }
@@ -151,6 +155,10 @@ module.exports = {
       template: "index.ejs",
       hash: true,
       publicPath: publicPath
+    }),
+    new ngAnnotatePlugin({
+      add: true,
+      // other ng-annotate options here
     })
   ],
 

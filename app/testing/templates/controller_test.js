@@ -40,7 +40,6 @@ describe('the test controller', function() {
     });
 
     describe('after receiving a response', function() {
-
       it('sets the data on the scope', function() {
         expect(this.scope.data).toBe(this.mockServiceData);
       });

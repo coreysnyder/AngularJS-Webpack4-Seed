@@ -30,7 +30,7 @@ module.exports = function(config) {
 
     failOnEmptyTestSuite: false,
 
-    webpack: require('./webpack.config-old'),
+    webpack: require('./webpack.config'),
 
     // Hide webpack build information from output
     webpackMiddleware: {
