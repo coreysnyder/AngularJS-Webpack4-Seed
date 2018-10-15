@@ -33,10 +33,10 @@ module.exports = {
         // Don't attempt to transpile any non-@aver node-modules
         exclude: /(node_modules\/(?!(@aver)\/).*|bower_components)/,
         use: [
-          // {
-          //   loader: 'ng-annotate-loader',
-          //   options: { add: true, single_quotes: true }
-          // },
+          {
+            loader: 'ng-annotate-loader',
+            options: { add: true, single_quotes: true }
+          },
           {
             loader: 'babel-loader',
             options: {
@@ -155,10 +155,6 @@ module.exports = {
       template: "index.ejs",
       hash: true,
       publicPath: publicPath
-    }),
-    new ngAnnotatePlugin({
-      add: true,
-      // other ng-annotate options here
     })
   ],
 

@@ -3,6 +3,7 @@
 
 require('angular');
 require('angular-mocks/angular-mocks');
+// import './enzyme.js';
 
 var context = require.context('./app', true, /_test\.js$/);
 context.keys().forEach(context);
