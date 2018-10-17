@@ -6,7 +6,7 @@ var ngAnnotatePlugin = require('ng-annotate-webpack-plugin');
 process.traceDeprecation = true;
 var ENV = process.env.npm_lifecycle_event;
 var isTest = (ENV.indexOf('test') > -1); // lifecycle event contains 'test'
-var publicPath = '/';
+var publicPath = '/contract-performance/';
 
 module.exports = {
   context: __dirname + '/app',
@@ -18,12 +18,30 @@ module.exports = {
   mode: isTest ? 'development' : 'production',
   // Where to output
   output: isTest ? {} : {
-    // Output to the same directory
     path: path.resolve(__dirname, 'dist'), // string
-    // publicPath: publicPath,
+    publicPath: publicPath, // Necessary - If set to '/' the browser will try to load app.js out of localhost/
     // Capture name from the entry using a pattern
     filename: '[name].js',
   },
+
+  devServer: {
+    contentBase: path.join(__dirname, './dist'),
+    // hot: false,
+    historyApiFallback: true,
+    publicPath: publicPath, // It is recommended that devServer.publicPath is the same as output.publicPath.
+  },
+
+
+   // What extra processing to perform
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: 'Test App',
+      template: "index.ejs",
+      // hash: true, // Applies a ?2f2343 hash at the end of the file name to bust the cache
+      publicPath: publicPath // Used to set the <base> tag in the HTML
+    })
+  ],
+
 
   // How to resolve encountered imports
   module: {
@@ -148,15 +166,6 @@ module.exports = {
     ],
   },
 
-  // What extra processing to perform
-  plugins: [
-    new HtmlWebpackPlugin({
-      title: 'Test App',
-      template: "index.ejs",
-      hash: true,
-      publicPath: publicPath
-    })
-  ],
 
   // Adjust module resolution algorithm
   resolve: {
